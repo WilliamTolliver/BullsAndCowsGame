@@ -11,19 +11,15 @@ int32 FBullCowGame::GetCurrentTry() const { return MyCurrentTry; }
 void FBullCowGame::Reset()
 {
 	constexpr int32 MAX_TRIES = 8;
-	MyMaxTries = MAX_TRIES;
-
 	const FString HIDDEN_WORD = "money";
+	bGameIsWon = false;
+	MyMaxTries = MAX_TRIES;
 	MyHiddenWord = HIDDEN_WORD;
-
 	MyCurrentTry = 1;
 	return;
 }
 
-bool FBullCowGame::IsGameWon() const
-{
-	return false;
-}
+bool FBullCowGame::IsGameWon() const{return bGameIsWon;}
 
 int32 FBullCowGame::GetHiddenWordLength() const
 {
@@ -53,16 +49,13 @@ EWordStatus FBullCowGame::CheckGuessValidity(FString Guess) const
 // receives a VALID guess, incriments turn, and returns count
 FBullCowCount FBullCowGame::SubmitGuess(FString Guess)
 {
-	// incriment the turn number
 	MyCurrentTry++;
-
-	// setup a return variable
 	FBullCowCount BullCowCount;
 
-	// loop through all letters in the guess
+	// loop through all letters in the HiddenWord
 	int32 HiddenWordLength = MyHiddenWord.length();
 	for (int32 hWChar = 0; hWChar < HiddenWordLength; hWChar++) {
-		// compare letters against the hidden word
+		// compare letters against the Guess
 		for (int32 GChar = 0; GChar < HiddenWordLength; GChar++) {
 			// if they match then
 			if (Guess[GChar] == MyHiddenWord[hWChar]) {
@@ -74,6 +67,13 @@ FBullCowCount FBullCowGame::SubmitGuess(FString Guess)
 				}
 			}
 		}
+	}
+
+	if (BullCowCount.Bulls == GetHiddenWordLength()) {
+		bGameIsWon = true;
+	}
+	else {
+		bGameIsWon = false;
 	}
 	return BullCowCount;
 }

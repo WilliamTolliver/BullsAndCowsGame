@@ -17,7 +17,7 @@ enum class EWordStatus
 	OK,
 	Not_Isogram,
 	Invalid_Length,
-	Invalid_String,
+	Invalid,
 	Not_Lowercase
 
 };
@@ -44,4 +44,5 @@ private:
 	int32 MyCurrentTry;
 	int32 MyMaxTries;
 	FString MyHiddenWord;
+	bool bGameIsWon;
 };
