@@ -12,6 +12,7 @@ using int32 = int;
 
 void PrintIntro();
 void PlayGame();
+void PrintGameSummary();
 FText GetValidGuess();
 bool AskToPlayAgain();
 
@@ -24,6 +25,7 @@ int main()
 	do {
 		PrintIntro();
 		PlayGame();
+		PrintGameSummary();
 		bPlayAgain = AskToPlayAgain();
 	} while (bPlayAgain);
 
@@ -39,6 +41,23 @@ void PrintIntro()
 	std::cout << "Can you guess the " << WORD_LENGTH;
 	std::cout << " letter isogram I'm thinking of?\n";
 	std::cout << std::endl;
+	return;
+}
+
+void PrintGameSummary()
+{
+	if (!BCGame.IsGameWon()) {
+		std::cout << "Sorry, you didnt guess the word in the alotted tries...\n";
+		std::cout << "You're garbage bro/breh... ";
+		std::cout << "The hidden word was: " + BCGame.GetHiddenWord();
+		std::cout << std::endl;
+	}
+	else {
+		std::cout << "Great job, you guess the word!\n";
+		std::cout << "The hidden word was: " + BCGame.GetHiddenWord() + "\n";
+		std::cout << "congrats on further wasting your life for meaningless gratification ";
+		std::cout << std::endl;
+	}
 	return;
 }
 
@@ -85,8 +104,10 @@ FText GetValidGuess()
 			break;
 		case EWordStatus::Not_Isogram:
 			std::cout << "Please ensure the guess is an actual isogram";
+			break;
 		case EWordStatus::Not_Lowercase:
 			std::cout << "Please ensure the word is all lowercase";
+			break;
 		default:
 			// Assume the guess is valid
 			break;

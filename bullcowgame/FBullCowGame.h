@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <map>
+#define TMap std::map
 
 using FString = std::string;
 using int32 = int;
@@ -33,10 +35,11 @@ public:
 	int32 GetHiddenWordLength() const;
 	bool IsGameWon() const;
 
-	void Reset(); // TODO make a more rich return value.
+	void Reset();
+	FString GetHiddenWord() const;
+	// TODO make a more rich return value.
 	EWordStatus CheckGuessValidity(FString) const; // TODO make a more rich return value.
 	FBullCowCount SubmitGuess(FString);
-
 
 	// ^^ Please try and ignore this and focus on the interface above ^^
 private:
@@ -45,4 +48,7 @@ private:
 	int32 MyMaxTries;
 	FString MyHiddenWord;
 	bool bGameIsWon;
+	bool IsLowercase(FString Word) const;
+	bool IsIsogram(FString) const;
+
 };

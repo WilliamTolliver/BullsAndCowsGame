@@ -2,7 +2,7 @@
 #include "FBullCowGame.h"
 
 using int32 = int;
-
+const FString HIDDEN_WORD = "money";
 FBullCowGame::FBullCowGame() { Reset(); }
 
 int32 FBullCowGame::GetMaxTries() const { return MyMaxTries; }
@@ -11,7 +11,7 @@ int32 FBullCowGame::GetCurrentTry() const { return MyCurrentTry; }
 void FBullCowGame::Reset()
 {
 	constexpr int32 MAX_TRIES = 8;
-	const FString HIDDEN_WORD = "money";
+
 	bGameIsWon = false;
 	MyMaxTries = MAX_TRIES;
 	MyHiddenWord = HIDDEN_WORD;
@@ -25,14 +25,21 @@ int32 FBullCowGame::GetHiddenWordLength() const
 {
 	return MyHiddenWord.length();
 }
+
+ FString FBullCowGame::GetHiddenWord() const
+{
+	return HIDDEN_WORD;
+}
+
 EWordStatus FBullCowGame::CheckGuessValidity(FString Guess) const
 {
 
-	if (false) // If guess isnt isogram
+	if (!IsIsogram(Guess)) // If guess isnt isogram
 	{
+
 		return EWordStatus::Not_Isogram;
 	}
-	else if (false) // If guess isnt all lowercase
+	else if (!IsLowercase(Guess)) // If guess isnt all lowercase
 	{
 		return EWordStatus::Not_Lowercase;
 	}
@@ -76,4 +83,34 @@ FBullCowCount FBullCowGame::SubmitGuess(FString Guess)
 		bGameIsWon = false;
 	}
 	return BullCowCount;
+}
+
+bool FBullCowGame::IsIsogram(FString Word) const {
+	// Treat 0 or 1 letter words as isograms
+	if (Word.length() <= 1) { return true; }
+
+	TMap<char, bool> LetterSeen; // Create a map and add each letter
+
+	for (auto Letter : Word)  // For all letters of the word
+	{
+		Letter = tolower(Letter); // Make sure all letters are lowercase
+		if (LetterSeen[Letter]) { // We do not have an isogram
+			return false;
+		}
+		else { // Add letter to the map
+			LetterSeen[Letter] = true;
+		}
+	}
+
+}
+
+bool FBullCowGame::IsLowercase(FString Word) const {
+
+	for (auto Letter : Word)  // For all letters of the word
+	{
+		if (!islower(Letter)) {
+			return false;
+		}
+	}
+	return true;
 }
